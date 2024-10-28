@@ -7,9 +7,10 @@
 <details>
 <summary>Table of Contents</summary>
 
-1. [Introduction :star:](#introduction)
-2. [Team Members :man_technologist:](#team-members)
-3. [Database Design :computer:](#training-center-management-system-database-design)
+- [Team 10: Training-Center-Management-System](#team-10-training-center-management-system)
+  - [Introduction](#introduction)
+  - [Team Members](#team-members)
+  - [Training Center Management System Database Design](#training-center-management-system-database-design)
 
 </details>
 
@@ -32,33 +33,40 @@ erDiagram
         string description
         float rate
     }
-    
+
     SESSION {
-        int session_id PK
-        string title
-        string content
+        int section_id PK
         int course_id FK
+        string description
+        string content
     }
-    
+
     STUDENT {
         int student_id PK
         string name
     }
-    
+
     INSTRUCTOR {
         int instructor_id PK
         string name
         float personal_level
     }
-    
+
     ASSIGNMENT {
         int assignment_id PK
-        string description
-        float score
         int session_id FK
         int student_id FK
+        string description
+        float score
     }
-    
+
+    BILLING {
+        int bill_id PK
+        int student_id FK
+        int instructor_id FK
+        int course_id FK
+    }
+
     ATTENDANCE {
         int attendance_id PK
         int session_id FK
@@ -66,24 +74,15 @@ erDiagram
         int instructor_id FK
         boolean is_present
     }
-    
-    BILLING {
-        int billing_id PK
-        int student_id FK
-        int instructor_id FK
-        float total_amount
-    }
-    
-    COURSE ||--o{ SESSION : has
-    COURSE ||--o{ INSTRUCTOR : assigned_to
+
+    COURSE ||--|{ SESSION : has
     SESSION ||--o{ ASSIGNMENT : has
-    STUDENT ||--o{ COURSE : registers_for
-    STUDENT ||--o{ SESSION : attends
-    STUDENT ||--o{ ASSIGNMENT : completes
-    INSTRUCTOR ||--o{ SESSION : teaches
-    INSTRUCTOR ||--o{ ATTENDANCE : logs
-    ATTENDANCE }o--|| SESSION : logged_for
+    SESSION ||--o{ ATTENDANCE : records
     ATTENDANCE }o--|| STUDENT : for
+    ATTENDANCE }o--|| INSTRUCTOR : for
+    ASSIGNMENT }o--|| STUDENT : completes
+    
     STUDENT ||--o{ BILLING : pays
-    BILLING }o--|| INSTRUCTOR : get_paid
+    INSTRUCTOR ||--o{ BILLING : gets_paid
+    COURSE ||--o{ BILLING : generates
 ```
