@@ -37,7 +37,7 @@ erDiagram
     SESSION {
         int section_id PK
         int course_id FK
-        string description
+        string title
         string content
     }
 
@@ -75,14 +75,14 @@ erDiagram
         boolean is_present
     }
 
-    COURSE ||--|{ SESSION : has
-    SESSION ||--o{ ASSIGNMENT : has
-    SESSION ||--o{ ATTENDANCE : records
-    ATTENDANCE }o--|| STUDENT : for
-    ATTENDANCE }o--|| INSTRUCTOR : for
-    ASSIGNMENT }o--|| STUDENT : completes
-    
-    STUDENT ||--o{ BILLING : pays
-    INSTRUCTOR ||--o{ BILLING : gets_paid
+    COURSE ||--|{ SESSION : includes
+    SESSION ||--o{ ASSIGNMENT : contains
+    SESSION ||--o{ ATTENDANCE : tracks
+    ATTENDANCE }o--|| STUDENT : records_for
+    ATTENDANCE }o--|| INSTRUCTOR : records_for
+    ASSIGNMENT }o--|| STUDENT : submitted_by
+
+    STUDENT ||--o{ BILLING : incurs
+    INSTRUCTOR ||--o{ BILLING : receives
     COURSE ||--o{ BILLING : generates
 ```
